@@ -50,7 +50,7 @@ public class RecipeServiceImplTest {
 
         when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(recipe));
 
-        Recipe recipeReturned = recipeService.findById("1").block();
+        Recipe recipeReturned = recipeService.findById("1").toProcessor().block();
 
         assertNotNull("Null recipe returned", recipeReturned);
         verify(recipeReactiveRepository, times(1)).findById(anyString());
@@ -70,7 +70,7 @@ public class RecipeServiceImplTest {
 
         when(recipeToRecipeCommand.convert(any())).thenReturn(recipeCommand);
 
-        RecipeCommand commandById = recipeService.findCommandById("1").block();
+        RecipeCommand commandById = recipeService.findCommandById("1").toProcessor().block();
 
         assertNotNull("Null recipe returned", commandById);
         verify(recipeReactiveRepository, times(1)).findById(anyString());
@@ -86,7 +86,7 @@ public class RecipeServiceImplTest {
 
         when(recipeService.getRecipes()).thenReturn(Flux.just(recipe));
 
-        List<Recipe> recipes = recipeService.getRecipes().collectList().block();
+        List<Recipe> recipes = recipeService.getRecipes().collectList().toProcessor().block();
 
         assertEquals(recipes.size(), 1);
         verify(recipeReactiveRepository, times(1)).findAll();

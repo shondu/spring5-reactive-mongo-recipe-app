@@ -21,7 +21,7 @@ public class UnitOfMeasureReactiveRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        unitOfMeasureReactiveRepository.deleteAll().block();
+        unitOfMeasureReactiveRepository.deleteAll().toProcessor().block();
     }
 
     @Test
@@ -29,9 +29,9 @@ public class UnitOfMeasureReactiveRepositoryTest {
         UnitOfMeasure uom = new UnitOfMeasure();
         uom.setDescription(EACH);
 
-        unitOfMeasureReactiveRepository.save(uom).block();
+        unitOfMeasureReactiveRepository.save(uom).toProcessor().block();
 
-        Long count = unitOfMeasureReactiveRepository.count().block();
+        Long count = unitOfMeasureReactiveRepository.count().toProcessor().block();
 
         assertEquals(Long.valueOf(1L), count);
 
@@ -42,9 +42,9 @@ public class UnitOfMeasureReactiveRepositoryTest {
         UnitOfMeasure uom = new UnitOfMeasure();
         uom.setDescription(EACH);
 
-        unitOfMeasureReactiveRepository.save(uom).block();
+        unitOfMeasureReactiveRepository.save(uom).toProcessor().block();
 
-        UnitOfMeasure fetchedUOM = unitOfMeasureReactiveRepository.findByDescription(EACH).block();
+        UnitOfMeasure fetchedUOM = unitOfMeasureReactiveRepository.findByDescription(EACH).toProcessor().block();
 
         assertEquals(EACH, fetchedUOM.getDescription());
 
